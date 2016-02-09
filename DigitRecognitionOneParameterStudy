@@ -1,0 +1,33 @@
+import matplotlib.pyplot as plt
+from PIL import Image
+import numpy
+from skimage.io import imread
+
+# Import datasets, classifiers and performance metrics
+from sklearn import datasets, svm, metrics
+
+############## Task I : Parameter Studies for gamma value and learning time ##################
+
+# The digits dataset
+digits = datasets.load_digits()
+
+# To apply a classifier on this data, we need to flatten the image, to
+# turn the data in a (samples, feature) matrix:
+n_samples = len(digits.images)
+data = digits.images.reshape((n_samples, -1))
+
+# Create a classifier: a support vector classifier
+classifier = svm.SVC(gamma=0.001)
+
+# We learn the digits on the first half of the digits
+TrainRange = n_samples * 0.9
+classifier.fit(data[:TrainRange], digits.target[:TrainRange])
+
+# Now predict the value of the digit on the second half:
+expected = digits.target[TrainRange:]
+predicted = classifier.predict(data[TrainRange:])
+
+print("Classification report for classifier %s:\n train: 0 to %d,tested: %d to %d.\n%s\n"
+    % (classifier,  TrainRange,TrainRange, len(digits.data),metrics.classification_report(expected, predicted)))
+print("Confusion matrix:\n %s" 
+    % ( metrics.confusion_matrix(expected, predicted)))
