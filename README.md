@@ -10,4 +10,4 @@ dataset is a dictionary-like object that holds all the data and some metadata ab
                 ('target_names', array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])),
                 ('data', array(1979 64 x 1 arrays)), 
                 ('DESCR', "Information about data"), 
-                ('target', array([0, 1, 2, ..., 8, 9, 8]))])
+                ('target', array([0, 1, 2, ..., 8, 9]))])
