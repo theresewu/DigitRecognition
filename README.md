@@ -6,10 +6,8 @@ To represent digits as constant length feature vectors, the data is resampled at
 
 dataset is a dictionary-like object that holds all the data and some metadata about the data imported from sklearm to digits. Then digits.items() returns the information about the data:
 
-\begin{Verbatim}
     dict_items([('images', array(1979 8 x 8 arrays)), 
                 ('target_names', array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])),
                 ('data', array(1979 64 x 1 arrays)), 
                 ('DESCR', "Information about data"), 
                 ('target', array([0, 1, 2, ..., 8, 9, 8]))])
-\end{Verbatim}
