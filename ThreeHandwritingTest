@@ -1,0 +1,74 @@
+############## Task III : Handwriting Test ##################
+
+import matplotlib.pyplot as plt
+from PIL import Image
+import numpy
+from skimage.io import imread
+
+# Import datasets, classifiers and performance metrics
+from sklearn import datasets, svm, metrics
+
+# The digits dataset
+digits= datasets.load_digits()
+
+# To apply a classifier on this data, we need to flatten the image, to
+# turn the data in a (samples, feature) matrix:
+n_samples = len(digits.images)
+data = digits.images.reshape((n_samples, -1))
+
+# Create a classifier: a support vector classifier
+classifier = svm.SVC(gamma=0.001)
+
+# We learn the digits on the first half of the digits
+TrainRange = n_samples * 0.9
+classifier.fit(data[:TrainRange], digits.target[:TrainRange])
+
+# Now predict the value of the digit on the second half:
+expected = digits.target[TrainRange:]
+predicted = classifier.predict(data[TrainRange:])
+
+print("Classification report for classifier %s:\n train: 0 to %d,tested: %d to %d.\n%s\n"
+    % (classifier,  TrainRange,TrainRange, len(digits.data),metrics.classification_report(expected, predicted)))
+print("Confusion matrix:\n %s" 
+    % ( metrics.confusion_matrix(expected, predicted)))
+
+
+imageFile = "zeros.tiff"
+im1 = Image.open(imageFile)
+# fix width and height to agree with training set
+width = 8
+height = 8
+# use one of these filter options to resize the image
+im2 = im1.resize((width, height), Image.NEAREST)      # use nearest neighbour
+im3 = im1.resize((width, height), Image.BILINEAR)     # linear interpolation in a 2x2 environment
+im4 = im1.resize((width, height), Image.BICUBIC)      # cubic spline interpolation in a 4x4 environment
+im5 = im1.resize((width, height), Image.ANTIALIAS)    # best down-sizing filter
+ext = ".jpg"
+im2.save("NEAREST" + ext)
+im3.save("BILINEAR" + ext)
+im4.save("BICUBIC" + ext)
+im5.save("ANTIALIAS" + ext)
+
+def rgb2gray(rgb):
+    r, g, b = rgb[:,:,0], rgb[:,:,1], rgb[:,:,2]
+    gray = 255-r
+    return gray
+
+im = imread("NEAREST.jpg")
+    
+imnew = rgb2gray(im)
+
+# Magic function can be used as an alternative method
+#im = map(lambda x: x[0] if x else None, im)
+
+#digits['data'][1000]=aux # This line is for replacing
+
+# this is for append. Thanks for contribution from Solidad
+# seven=[seven]
+# digits['data']=numpy.append(digits['data'],a aux, axis=0)
+
+imfinal = imnew.flatten()
+print("Here is final:",imfinal)
+
+print ("Final: ",classifier.predict(imfinal))
+plt.imshow(imnew, cmap=plt.cm.gray_r, interpolation="nearest") # Show the picture of last image.
